@@ -1,0 +1,34 @@
+
+
+variables:
+	{banka::%player%::bakiye} = 0
+
+
+command /banka [<text>] [<integer>]:
+	trigger:
+		if arg-1 is not set:
+			send "&eBankadaki bakiyen: &b%{banka::%player%::bakiye}% TL"
+		else if arg-1 is "yatır":
+			if arg-2 is set:
+				if arg-2 is greater than 0:
+					if player's balance is greater than or equal to arg-2:
+						send "&ePara bankaya başarıyla yatırıldı, &b%arg-2% TL" to player
+						add arg-2 to {banka::%player%::bakiye}
+					else:
+						send "&eBankaya yatıracak kadar paran yok!" to player
+				else:
+					send "&eYatırılacak miktar 0'dan büyük olmalı!" to player
+			else:
+				send "&eLütfen yatıracak miktarı giriniz!" to player
+		else if arg-1 is "çek":
+			if arg-2 is set:
+				if arg-2 is greater than 0:
+					if {banka::%player%::bakiye} is greater than or equal to arg-2:
+						send "&ePara başarıyla bankanızdan çekildi, &b%arg-2% TL" to player
+						remove arg-2 from {banka::%player%::bakiye}
+					else:
+						send "&eBankada bu kadar paranız yok, bankadaki paranız: &b%{banka::%player%::bakiye}% TL" to player
+				else:
+					send "&eBankadan çekilecek miktar 0'dan büyük olmalı!" to player
+			else:
+				send "&eLütfen çekilecek miktarı giriniz!" to player
